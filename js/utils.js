@@ -26,6 +26,24 @@ export function formatDate(dateString) {
 }
 
 /**
+ * Format a numeric amount as currency with M/B suffix
+ * @param {number|string} amount - Amount (may be in millions or raw)
+ * @returns {string} Formatted amount (e.g., "$10.5M", "$1.2B")
+ */
+export function formatCurrency(amount) {
+  if (amount == null || amount === '') return '';
+  const num = typeof amount === 'string' ? parseFloat(amount) : amount;
+  if (isNaN(num)) return '';
+  if (num >= 1000) {
+    return '$' + (num / 1000).toFixed(1) + 'B';
+  }
+  if (num >= 1) {
+    return '$' + num.toFixed(1) + 'M';
+  }
+  return '$' + (num * 1000).toFixed(0) + 'K';
+}
+
+/**
  * Escape HTML characters to prevent XSS
  * @param {string} str - String to escape
  * @returns {string} Escaped string

@@ -17,7 +17,12 @@ export function sleep(ms) {
  * @returns {string} Formatted date
  */
 export function formatDate(dateString) {
+  if (!dateString) return '';
   const date = new Date(dateString);
+  if (isNaN(date.getTime())) {
+    // Non-ISO date strings like "Q4 2025" or "2025-01-26 to 2025-02-01"
+    return String(dateString);
+  }
   return new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
     month: 'short',
@@ -32,8 +37,12 @@ export function formatDate(dateString) {
  */
 export function formatCurrency(amount) {
   if (amount == null || amount === '') return '';
-  const num = typeof amount === 'string' ? parseFloat(amount) : amount;
-  if (isNaN(num)) return '';
+  // If already formatted as string like "$200M" or "$3B", return as-is
+  if (typeof amount === 'string' && /^\$[\d.]+[KMBkmb]?$/i.test(amount.trim())) {
+    return amount.trim();
+  }
+  const num = typeof amount === 'string' ? parseFloat(amount.replace(/[^0-9.]/g, '')) : amount;
+  if (isNaN(num)) return String(amount);
   if (num >= 1000) {
     return '$' + (num / 1000).toFixed(1) + 'B';
   }

@@ -90,11 +90,13 @@ export async function renderFundingAlerts() {
     // Render funding round cards
     container.innerHTML = data.funding_rounds.map(round => {
       const date = round.date || round.collected_at;
-      const leadInvestors = round.lead_investors && Array.isArray(round.lead_investors) && round.lead_investors.length > 0
-        ? round.lead_investors
+      const leadRaw = round.lead_investors;
+      const leadInvestors = leadRaw
+        ? (Array.isArray(leadRaw) ? (leadRaw.length > 0 ? leadRaw : null) : [leadRaw])
         : null;
-      const relevantPortfolio = round.relevant_portfolio && Array.isArray(round.relevant_portfolio) && round.relevant_portfolio.length > 0
-        ? round.relevant_portfolio
+      const relRaw = round.relevant_portfolio;
+      const relevantPortfolio = relRaw
+        ? (Array.isArray(relRaw) ? (relRaw.length > 0 ? relRaw : null) : [relRaw])
         : null;
       const amount = round.amount ? formatCurrency(round.amount) : null;
       const stage = round.stage ? ` ${round.stage}` : '';

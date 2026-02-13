@@ -30,9 +30,10 @@ export async function renderPortfolioGrid() {
       return;
     }
 
-    // Render company cards
+    // Render company cards (clickable)
     container.innerHTML = data.companies.map(company => `
-      <div class="bg-gray-800 border border-gray-700 rounded-lg p-4 hover:border-blue-500 transition-colors">
+      <div class="bg-gray-800 border border-gray-700 rounded-lg p-4 hover:border-blue-500 transition-colors cursor-pointer"
+           data-slug="${escapeHtml(company.slug)}" data-company-name="${escapeHtml(company.name)}">
         <h3 class="text-lg font-bold text-white mb-3">${escapeHtml(company.name)}</h3>
         <div class="space-y-2 text-sm">
           <div class="flex justify-between">
@@ -48,8 +49,16 @@ export async function renderPortfolioGrid() {
             <span class="text-white font-semibold">${company.news_count || 0}</span>
           </div>
         </div>
+        <p class="text-xs text-blue-400 mt-3">Click for intel details &rarr;</p>
       </div>
     `).join('');
+
+    // Add click handlers to cards
+    container.querySelectorAll('[data-slug]').forEach(card => {
+      card.addEventListener('click', () => {
+        showCompanyDetail(card.dataset.slug, card.dataset.companyName);
+      });
+    });
 
     console.log(`Rendered ${data.companies.length} portfolio companies`);
   } catch (error) {
@@ -132,5 +141,86 @@ export async function renderFundingAlerts() {
         <p class="text-sm">${escapeHtml(error.message)}</p>
       </div>
     `;
+  }
+}
+
+/**
+ * Show company detail in modal
+ */
+async function showCompanyDetail(slug, name) {
+  const modal = document.getElementById('entity-modal');
+  const title = document.getElementById('entity-modal-title');
+  const content = document.getElementById('entity-modal-content');
+  if (!modal || !title || !content) return;
+
+  title.textContent = name;
+  content.innerHTML = `
+    <div class="flex items-center gap-2 text-gray-400 py-8 justify-center">
+      <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      <span>Loading intel...</span>
+    </div>
+  `;
+  modal.classList.remove('hidden');
+
+  try {
+    const response = await fetchWithRetry(API_BASE + '/api/portfolio/company/' + slug);
+    const data = await response.json();
+
+    if (!data.found) {
+      content.innerHTML = '<p class="text-gray-400">Company not found</p>';
+      return;
+    }
+
+    let html = '';
+
+    // Sectors
+    if (data.sectors && data.sectors.length > 0) {
+      html += `<div class="flex flex-wrap gap-2 mb-4">${data.sectors.map(s =>
+        `<span class="px-2 py-1 bg-blue-900/30 text-blue-300 rounded text-xs">${escapeHtml(s)}</span>`
+      ).join('')}</div>`;
+    }
+
+    // Intel items
+    if (data.intel && data.intel.length > 0) {
+      html += '<h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Intel Briefings</h3>';
+      html += data.intel.map(item => `
+        <div class="border border-gray-700 rounded-lg p-4 mb-3">
+          <div class="flex justify-between items-start mb-2">
+            <h4 class="font-bold text-white text-sm flex-1">${escapeHtml(item.headline)}</h4>
+            <span class="px-2 py-0.5 bg-gray-700 text-gray-300 rounded text-xs ml-2 whitespace-nowrap">${escapeHtml(item.item_type)}</span>
+          </div>
+          ${item.why_it_matters ? `<p class="text-gray-300 text-sm mb-2">${escapeHtml(item.why_it_matters)}</p>` : ''}
+          ${item.sources && item.sources.length > 0 ? `
+            <div class="flex flex-wrap gap-2 mt-2">
+              ${item.sources.map(src => `<a href="${escapeHtml(src.url)}" target="_blank" rel="noopener" class="text-xs text-blue-400 hover:text-blue-300 underline">${escapeHtml(src.label)}</a>`).join('')}
+            </div>
+          ` : ''}
+        </div>
+      `).join('');
+    }
+
+    // Funding rounds
+    if (data.funding && data.funding.length > 0) {
+      html += '<h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3 mt-4">Funding Rounds</h3>';
+      html += data.funding.map(f => `
+        <div class="border-l-4 border-green-500 bg-gray-800/50 p-3 mb-2 rounded-r">
+          <span class="text-white font-semibold">${escapeHtml(f.round || '')}</span>
+          ${f.amount ? ` <span class="text-gray-300">${formatCurrency(f.amount)}</span>` : ''}
+          ${f.date ? ` <span class="text-gray-500 text-xs">${formatDate(f.date)}</span>` : ''}
+        </div>
+      `).join('');
+    }
+
+    if (!html) {
+      html = '<p class="text-gray-400">No intel data available for this company.</p>';
+    }
+
+    content.innerHTML = html;
+  } catch (error) {
+    console.error('Failed to load company detail:', error);
+    content.innerHTML = `<p class="text-red-400">Failed to load company details: ${escapeHtml(error.message)}</p>`;
   }
 }

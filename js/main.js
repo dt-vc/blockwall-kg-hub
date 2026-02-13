@@ -7,6 +7,7 @@ import { initChat, sendQuestion } from "./chat.js";
 import { checkHealth } from "./api.js";
 import { SUGGESTIONS } from "./config.js";
 import { initEntityModal } from "./entities.js";
+import { initTabs } from "./dashboard.js";
 
 // Wait for DOM to be ready
 document.addEventListener("DOMContentLoaded", async () => {
@@ -19,7 +20,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 3. Initialize entity modal
   initEntityModal();
 
-  // 4. Background health check (wake backend)
+  // 4. Initialize tab navigation
+  initTabs();
+
+  // 5. Background health check (wake backend)
   try {
     await checkHealth();
     console.log("Backend ready");

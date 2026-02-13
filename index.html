@@ -14,55 +14,118 @@
   <!-- DOMPurify for XSS sanitization -->
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
 
+  <!-- Chart.js for dashboard visualizations -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+
   <!-- Custom styles -->
   <link rel="stylesheet" href="./css/custom.css">
 </head>
 <body class="bg-gray-900 text-white min-h-screen">
-  <div class="flex flex-col h-screen max-w-4xl mx-auto">
+  <div class="flex flex-col h-screen max-w-7xl mx-auto">
     <!-- Header -->
     <header class="flex-none border-b border-gray-700 p-4">
       <h1 class="text-2xl font-bold">Blockwall Knowledge Hub</h1>
       <p class="text-gray-400 text-sm mt-1">Ask about crypto entities, trends, and portfolio intelligence</p>
+
+      <!-- Tab Navigation -->
+      <nav role="tablist" class="flex gap-2 mt-4 border-b border-gray-700">
+        <button
+          role="tab"
+          data-tab="chat"
+          aria-selected="true"
+          class="px-6 py-3 font-medium transition-colors border-b-2 border-blue-500 text-blue-500"
+        >
+          Chat
+        </button>
+        <button
+          role="tab"
+          data-tab="trends"
+          aria-selected="false"
+          class="px-6 py-3 font-medium transition-colors border-b-2 border-transparent text-gray-400 hover:text-white"
+        >
+          Trends
+        </button>
+        <button
+          role="tab"
+          data-tab="portfolio"
+          aria-selected="false"
+          class="px-6 py-3 font-medium transition-colors border-b-2 border-transparent text-gray-400 hover:text-white"
+        >
+          Portfolio
+        </button>
+      </nav>
     </header>
 
-    <!-- Pipeline Status Area (hidden by default, shown during query) -->
-    <div id="pipeline-status" class="hidden px-4 py-2 bg-gray-800 border-b border-gray-700" role="status" aria-live="polite">
-      <div class="flex items-center gap-2 text-sm text-gray-300">
-        <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-        <span id="pipeline-message">Processing...</span>
-      </div>
-    </div>
+    <!-- Tab Panels Container -->
+    <main class="flex-1 overflow-y-auto">
+      <!-- Chat Panel (Default Active) -->
+      <div data-panel="chat" role="tabpanel" aria-hidden="false" class="flex flex-col h-full">
+        <!-- Pipeline Status Area (hidden by default, shown during query) -->
+        <div id="pipeline-status" class="hidden px-4 py-2 bg-gray-800 border-b border-gray-700" role="status" aria-live="polite">
+          <div class="flex items-center gap-2 text-sm text-gray-300">
+            <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span id="pipeline-message">Processing...</span>
+          </div>
+        </div>
 
-    <!-- Messages Container -->
-    <div id="messages" class="flex-1 overflow-y-auto p-4 space-y-4">
-      <!-- Suggestions (shown when no messages) -->
-      <div id="suggestions" class="flex flex-col gap-3"></div>
-    </div>
+        <!-- Messages Container -->
+        <div id="messages" class="flex-1 overflow-y-auto p-4 space-y-4">
+          <!-- Suggestions (shown when no messages) -->
+          <div id="suggestions" class="flex flex-col gap-3"></div>
+        </div>
 
-    <!-- Input Form -->
-    <form id="chat-form" class="flex-none border-t border-gray-700 p-4">
-      <div class="flex gap-2">
-        <input
-          type="text"
-          id="question-input"
-          placeholder="Ask about crypto entities, trends, or portfolio..."
-          class="flex-1 bg-gray-800 text-white border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          autocomplete="off"
-          aria-label="Enter your question about crypto entities, trends, or portfolio"
-        />
-        <button
-          type="submit"
-          id="send-button"
-          class="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-6 py-2 rounded-lg font-medium transition-colors"
-          aria-label="Send question"
-        >
-          Send
-        </button>
+        <!-- Input Form -->
+        <form id="chat-form" class="flex-none border-t border-gray-700 p-4">
+          <div class="flex gap-2">
+            <input
+              type="text"
+              id="question-input"
+              placeholder="Ask about crypto entities, trends, or portfolio..."
+              class="flex-1 bg-gray-800 text-white border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              autocomplete="off"
+              aria-label="Enter your question about crypto entities, trends, or portfolio"
+            />
+            <button
+              type="submit"
+              id="send-button"
+              class="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-6 py-2 rounded-lg font-medium transition-colors"
+              aria-label="Send question"
+            >
+              Send
+            </button>
+          </div>
+        </form>
       </div>
-    </form>
+
+      <!-- Trends Panel -->
+      <div data-panel="trends" role="tabpanel" aria-hidden="true" class="hidden p-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="bg-gray-800 rounded-lg p-4 border border-gray-700">
+            <canvas id="trending-topics-chart" height="350"></canvas>
+          </div>
+          <div class="bg-gray-800 rounded-lg p-4 border border-gray-700">
+            <canvas id="sentiment-chart" height="350"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Portfolio Panel -->
+      <div data-panel="portfolio" role="tabpanel" aria-hidden="true" class="hidden p-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-2">
+            <h2 class="text-xl font-bold mb-4">Portfolio Companies</h2>
+            <div id="portfolio-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+          </div>
+          <div>
+            <h2 class="text-xl font-bold mb-4">Recent Funding</h2>
+            <div id="funding-alerts" class="space-y-3"></div>
+          </div>
+        </div>
+      </div>
+    </main>
   </div>
 
   <!-- Entity Modal (hidden by default) -->

@@ -45,8 +45,12 @@ export async function renderPortfolioGrid() {
             <span class="font-semibold" style="color: var(--text-primary);">${company.funding_count || 0}</span>
           </div>
           <div class="flex justify-between">
-            <span style="color: var(--text-secondary);">News Articles</span>
-            <span class="font-semibold" style="color: var(--text-primary);">${company.news_count || 0}</span>
+            <span style="color: var(--text-secondary);">Blog Posts</span>
+            <span class="font-semibold" style="color: var(--text-primary);">${company.blog_count || 0}</span>
+          </div>
+          <div class="flex justify-between">
+            <span style="color: var(--text-secondary);">News Coverage</span>
+            <span class="font-semibold" style="color: var(--text-primary);">${company.news_items_count || 0}</span>
           </div>
         </div>
         <p class="text-xs mt-3" style="color: var(--gold);">Click for intel details &rarr;</p>

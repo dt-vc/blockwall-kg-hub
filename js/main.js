@@ -5,9 +5,12 @@
 
 import { initChat, sendQuestion } from "./chat.js";
 import { checkHealth } from "./api.js";
-import { SUGGESTIONS } from "./config.js";
+import { API_BASE, SUGGESTIONS } from "./config.js";
 import { initEntityModal } from "./entities.js";
 import { initTabs } from "./dashboard.js";
+
+// Expose API_BASE for sync button in index.html
+window.__API_BASE = API_BASE;
 
 // Wait for DOM to be ready
 document.addEventListener("DOMContentLoaded", async () => {
@@ -48,7 +51,8 @@ function renderSuggestions() {
 
   // Add label
   const label = document.createElement("p");
-  label.className = "text-sm text-gray-500 mb-3";
+  label.className = "text-sm mb-3";
+  label.style.color = "var(--text-secondary)";
   label.textContent = "Try asking:";
   wrapper.appendChild(label);
 
@@ -60,7 +64,8 @@ function renderSuggestions() {
   SUGGESTIONS.forEach((suggestion) => {
     const button = document.createElement("button");
     button.type = "button";
-    button.className = "text-xs px-3 py-1.5 rounded-full bg-gray-800 border border-gray-700 text-gray-400 hover:text-white hover:border-blue-500 transition-all cursor-pointer";
+    button.className = "text-xs px-3 py-1.5 rounded-full glass glass-hover transition-all cursor-pointer";
+    button.style.color = "var(--text-secondary)";
     button.textContent = suggestion;
 
     // Add click handler

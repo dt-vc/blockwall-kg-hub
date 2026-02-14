@@ -32,24 +32,24 @@ export async function renderPortfolioGrid() {
 
     // Render company cards (clickable)
     container.innerHTML = data.companies.map(company => `
-      <div class="bg-gray-800 border border-gray-700 rounded-lg p-4 hover:border-blue-500 transition-colors cursor-pointer"
+      <div class="glass glass-hover p-4 cursor-pointer"
            data-slug="${escapeHtml(company.slug)}" data-company-name="${escapeHtml(company.name)}">
-        <h3 class="text-lg font-bold text-white mb-3">${escapeHtml(company.name)}</h3>
+        <h3 class="font-display text-lg font-bold mb-3" style="color: var(--text-primary);">${escapeHtml(company.name)}</h3>
         <div class="space-y-2 text-sm">
           <div class="flex justify-between">
-            <span class="text-gray-400">Intel Items</span>
-            <span class="text-white font-semibold">${company.intel_count || 0}</span>
+            <span style="color: var(--text-secondary);">Intel Items</span>
+            <span class="font-semibold" style="color: var(--text-primary);">${company.intel_count || 0}</span>
           </div>
           <div class="flex justify-between">
-            <span class="text-gray-400">Funding Rounds</span>
-            <span class="text-white font-semibold">${company.funding_count || 0}</span>
+            <span style="color: var(--text-secondary);">Funding Rounds</span>
+            <span class="font-semibold" style="color: var(--text-primary);">${company.funding_count || 0}</span>
           </div>
           <div class="flex justify-between">
-            <span class="text-gray-400">News Articles</span>
-            <span class="text-white font-semibold">${company.news_count || 0}</span>
+            <span style="color: var(--text-secondary);">News Articles</span>
+            <span class="font-semibold" style="color: var(--text-primary);">${company.news_count || 0}</span>
           </div>
         </div>
-        <p class="text-xs text-blue-400 mt-3">Click for intel details &rarr;</p>
+        <p class="text-xs mt-3" style="color: var(--gold);">Click for intel details &rarr;</p>
       </div>
     `).join('');
 
@@ -111,22 +111,22 @@ export async function renderFundingAlerts() {
       const stage = round.stage ? ` ${round.stage}` : '';
 
       return `
-        <div class="border-l-4 border-blue-500 bg-gray-800 p-4 rounded-r-lg">
+        <div class="glass p-4" style="border-left: 3px solid var(--gold);">
           <div class="flex justify-between items-start mb-2">
-            <h4 class="font-bold text-white">${escapeHtml(round.company)}</h4>
-            <span class="text-xs text-gray-400">${formatDate(date)}</span>
+            <h4 class="font-bold" style="color: var(--text-primary);">${escapeHtml(round.company)}</h4>
+            <span class="text-xs" style="color: var(--text-secondary);">${formatDate(date)}</span>
           </div>
           <div class="flex flex-wrap gap-2 text-sm">
-            <span class="px-2 py-0.5 bg-blue-900/30 text-blue-300 rounded text-xs">
+            <span class="glass-gold px-2 py-0.5 rounded text-xs" style="color: var(--gold);">
               ${escapeHtml(round.round)}${stage ? escapeHtml(stage) : ''}
             </span>
-            ${amount ? `<span class="text-gray-300 font-semibold">${amount}</span>` : ''}
+            ${amount ? `<span class="font-semibold" style="color: var(--text-primary);">${amount}</span>` : ''}
           </div>
           ${leadInvestors ? `
-            <p class="text-xs text-gray-400 mt-2">Lead: ${leadInvestors.map(inv => escapeHtml(inv)).join(', ')}</p>
+            <p class="text-xs mt-2" style="color: var(--text-secondary);">Lead: ${leadInvestors.map(inv => escapeHtml(inv)).join(', ')}</p>
           ` : ''}
           ${relevantPortfolio ? `
-            <p class="text-xs text-blue-400 mt-1">Related: ${relevantPortfolio.map(comp => escapeHtml(comp)).join(', ')}</p>
+            <p class="text-xs mt-1" style="color: var(--gold);">Related: ${relevantPortfolio.map(comp => escapeHtml(comp)).join(', ')}</p>
           ` : ''}
         </div>
       `;
@@ -179,23 +179,23 @@ async function showCompanyDetail(slug, name) {
     // Sectors
     if (data.sectors && data.sectors.length > 0) {
       html += `<div class="flex flex-wrap gap-2 mb-4">${data.sectors.map(s =>
-        `<span class="px-2 py-1 bg-blue-900/30 text-blue-300 rounded text-xs">${escapeHtml(s)}</span>`
+        `<span class="glass-gold px-2 py-1 rounded text-xs" style="color: var(--gold);">${escapeHtml(s)}</span>`
       ).join('')}</div>`;
     }
 
     // Intel items
     if (data.intel && data.intel.length > 0) {
-      html += '<h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Intel Briefings</h3>';
+      html += '<h3 class="text-sm font-semibold uppercase tracking-wide mb-3" style="color: var(--text-secondary);">Intel Briefings</h3>';
       html += data.intel.map(item => `
-        <div class="border border-gray-700 rounded-lg p-4 mb-3">
+        <div class="glass p-4 mb-3">
           <div class="flex justify-between items-start mb-2">
-            <h4 class="font-bold text-white text-sm flex-1">${escapeHtml(item.headline)}</h4>
-            <span class="px-2 py-0.5 bg-gray-700 text-gray-300 rounded text-xs ml-2 whitespace-nowrap">${escapeHtml(item.item_type)}</span>
+            <h4 class="font-bold text-sm flex-1" style="color: var(--text-primary);">${escapeHtml(item.headline)}</h4>
+            <span class="glass px-2 py-0.5 rounded text-xs ml-2 whitespace-nowrap" style="color: var(--text-secondary);">${escapeHtml(item.item_type)}</span>
           </div>
-          ${item.why_it_matters ? `<p class="text-gray-300 text-sm mb-2">${escapeHtml(item.why_it_matters)}</p>` : ''}
+          ${item.why_it_matters ? `<p class="text-sm mb-2" style="color: var(--text-secondary);">${escapeHtml(item.why_it_matters)}</p>` : ''}
           ${item.sources && item.sources.length > 0 ? `
             <div class="flex flex-wrap gap-2 mt-2">
-              ${item.sources.map(src => `<a href="${escapeHtml(src.url)}" target="_blank" rel="noopener" class="text-xs text-blue-400 hover:text-blue-300 underline">${escapeHtml(src.label)}</a>`).join('')}
+              ${item.sources.map(src => `<a href="${escapeHtml(src.url)}" target="_blank" rel="noopener" class="text-xs underline" style="color: var(--gold);">${escapeHtml(src.label)}</a>`).join('')}
             </div>
           ` : ''}
         </div>
@@ -204,12 +204,12 @@ async function showCompanyDetail(slug, name) {
 
     // Funding rounds
     if (data.funding && data.funding.length > 0) {
-      html += '<h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3 mt-4">Funding Rounds</h3>';
+      html += '<h3 class="text-sm font-semibold uppercase tracking-wide mb-3 mt-4" style="color: var(--text-secondary);">Funding Rounds</h3>';
       html += data.funding.map(f => `
-        <div class="border-l-4 border-green-500 bg-gray-800/50 p-3 mb-2 rounded-r">
-          <span class="text-white font-semibold">${escapeHtml(f.round || '')}</span>
-          ${f.amount ? ` <span class="text-gray-300">${formatCurrency(f.amount)}</span>` : ''}
-          ${f.date ? ` <span class="text-gray-500 text-xs">${formatDate(f.date)}</span>` : ''}
+        <div class="glass p-3 mb-2" style="border-left: 3px solid var(--green);">
+          <span class="font-semibold" style="color: var(--text-primary);">${escapeHtml(f.round || '')}</span>
+          ${f.amount ? ` <span style="color: var(--text-secondary);">${formatCurrency(f.amount)}</span>` : ''}
+          ${f.date ? ` <span class="text-xs" style="color: var(--text-muted);">${formatDate(f.date)}</span>` : ''}
         </div>
       `).join('');
     }

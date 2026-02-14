@@ -69,7 +69,8 @@ export function renderEntityPills(messageEl, metaData = null) {
   entitiesContainer.innerHTML = '';
   entityNames.forEach(entityName => {
     const pill = document.createElement('span');
-    pill.className = 'inline-block px-2 py-0.5 text-xs bg-blue-900/30 border border-blue-700 text-blue-300 rounded-full cursor-pointer hover:bg-blue-800/50 transition-colors mr-2 mb-2';
+    pill.className = 'inline-block px-2 py-0.5 text-xs glass-gold rounded-full cursor-pointer transition-colors mr-2 mb-2';
+    pill.style.color = 'var(--gold)';
     pill.textContent = entityName;
     pill.addEventListener('click', () => showEntityDetail(entityName));
     entitiesContainer.appendChild(pill);
@@ -187,13 +188,13 @@ function renderEntityProfile(titleEl, contentEl, profile) {
   // Stats row
   const statsHtml = `
     <div class="grid grid-cols-2 gap-4 mb-6">
-      <div class="bg-gray-900/50 rounded-lg p-3">
-        <div class="text-gray-400 text-xs mb-1">Total Mentions</div>
-        <div class="text-white text-2xl font-bold">${total_mentions}</div>
+      <div class="glass rounded-lg p-3">
+        <div class="text-xs mb-1" style="color: var(--text-secondary);">Total Mentions</div>
+        <div class="text-2xl font-bold" style="color: var(--text-primary);">${total_mentions}</div>
       </div>
-      <div class="bg-gray-900/50 rounded-lg p-3">
-        <div class="text-gray-400 text-xs mb-1">Dominant Sentiment</div>
-        <div class="text-white text-2xl font-bold capitalize">${escapeHtml(dominantSentiment)}</div>
+      <div class="glass rounded-lg p-3">
+        <div class="text-xs mb-1" style="color: var(--text-secondary);">Dominant Sentiment</div>
+        <div class="text-2xl font-bold capitalize" style="color: var(--text-primary);">${escapeHtml(dominantSentiment)}</div>
       </div>
     </div>
   `;
@@ -241,7 +242,7 @@ function renderSentimentBreakdown(sentimentBreakdown, total) {
 
   return `
     <div class="mb-6">
-      <h3 class="text-sm font-semibold text-gray-400 mb-2">Sentiment Breakdown</h3>
+      <h3 class="text-sm font-semibold mb-2" style="color: var(--text-secondary);">Sentiment Breakdown</h3>
       <div class="flex h-8 rounded-lg overflow-hidden">
         ${bullish > 0 ? `<div class="bg-green-600 flex items-center justify-center text-white text-xs font-medium" style="width: ${bullishPct}%">${bullishPct > 10 ? bullishPct + '%' : ''}</div>` : ''}
         ${bearish > 0 ? `<div class="bg-red-600 flex items-center justify-center text-white text-xs font-medium" style="width: ${bearishPct}%">${bearishPct > 10 ? bearishPct + '%' : ''}</div>` : ''}
@@ -279,8 +280,8 @@ function renderCategoryBreakdown(categoryBreakdown) {
 
   return `
     <div class="mb-6">
-      <h3 class="text-sm font-semibold text-gray-400 mb-2">Categories</h3>
-      <div class="bg-gray-900/50 rounded-lg p-3">
+      <h3 class="text-sm font-semibold mb-2" style="color: var(--text-secondary);">Categories</h3>
+      <div class="glass rounded-lg p-3">
         ${categoriesHtml}
       </div>
     </div>
@@ -302,13 +303,13 @@ function renderCoOccurringEntities(coEntities) {
     .map(entity => {
       const name = entity.entity_name || entity.name;
       const count = entity.co_occurrence_count || entity.count || 0;
-      return `<span class="inline-block px-2 py-1 text-xs bg-blue-900/30 border border-blue-700 text-blue-300 rounded-full cursor-pointer hover:bg-blue-800/50 transition-colors mr-2 mb-2" data-entity-name="${escapeHtml(name)}">${escapeHtml(name)} (${count})</span>`;
+      return `<span class="inline-block px-2 py-1 text-xs glass-gold rounded-full cursor-pointer transition-colors mr-2 mb-2" style="color: var(--gold);" data-entity-name="${escapeHtml(name)}">${escapeHtml(name)} (${count})</span>`;
     })
     .join('');
 
   return `
     <div class="mb-6">
-      <h3 class="text-sm font-semibold text-gray-400 mb-2">Co-occurring Entities</h3>
+      <h3 class="text-sm font-semibold mb-2" style="color: var(--text-secondary);">Co-occurring Entities</h3>
       <div id="co-entities-pills">
         ${pillsHtml}
       </div>
@@ -343,8 +344,8 @@ function renderRecentArticles(articles) {
       const sentimentClass = sentimentColors[sentiment] || 'text-gray-400';
 
       const titleHtml = url
-        ? `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 hover:underline">${escapeHtml(title)}</a>`
-        : `<span class="text-gray-300">${escapeHtml(title)}</span>`;
+        ? `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="hover:underline" style="color: var(--gold);">${escapeHtml(title)}</a>`
+        : `<span style="color: var(--text-primary);">${escapeHtml(title)}</span>`;
 
       return `
         <div class="border-b border-gray-700 py-3 last:border-0">
@@ -361,8 +362,8 @@ function renderRecentArticles(articles) {
 
   return `
     <div class="mb-4">
-      <h3 class="text-sm font-semibold text-gray-400 mb-2">Recent Articles</h3>
-      <div class="bg-gray-900/50 rounded-lg p-3 max-h-64 overflow-y-auto">
+      <h3 class="text-sm font-semibold mb-2" style="color: var(--text-secondary);">Recent Articles</h3>
+      <div class="glass rounded-lg p-3 max-h-64 overflow-y-auto">
         ${articlesHtml}
       </div>
     </div>

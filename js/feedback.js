@@ -16,23 +16,25 @@ const SESSION_ID = crypto.randomUUID();
  */
 export function createFeedbackButtons(question, answer) {
   const container = document.createElement("div");
-  container.className = "flex items-center gap-2 mt-2 pt-2 border-t border-gray-700/50";
+  container.className = "flex items-center gap-2 mt-2 pt-2";
+  container.style.borderTop = '1px solid var(--border-subtle)';
 
   // "Was this helpful?" text
   const text = document.createElement("span");
-  text.className = "text-xs text-gray-500";
+  text.className = "text-xs";
+  text.style.color = 'var(--text-secondary)';
   text.textContent = "Was this helpful?";
 
   // Thumbs up button
   const thumbsUp = document.createElement("button");
-  thumbsUp.className = "px-2 py-1 text-sm bg-gray-700/50 hover:bg-gray-600 rounded transition-colors cursor-pointer";
+  thumbsUp.className = "px-2 py-1 text-sm glass glass-hover rounded cursor-pointer";
   thumbsUp.textContent = "👍";
   thumbsUp.title = "Helpful";
   thumbsUp.addEventListener("click", () => submitFeedback(true, question, answer, container));
 
   // Thumbs down button
   const thumbsDown = document.createElement("button");
-  thumbsDown.className = "px-2 py-1 text-sm bg-gray-700/50 hover:bg-gray-600 rounded transition-colors cursor-pointer";
+  thumbsDown.className = "px-2 py-1 text-sm glass glass-hover rounded cursor-pointer";
   thumbsDown.textContent = "👎";
   thumbsDown.title = "Not helpful";
   thumbsDown.addEventListener("click", () => submitFeedback(false, question, answer, container));
@@ -79,7 +81,7 @@ async function submitFeedback(rating, question, answer, container) {
 
     if (response.ok) {
       // Success - replace buttons with confirmation
-      container.innerHTML = '<span class="text-xs text-gray-500">Thanks for your feedback!</span>';
+      container.innerHTML = '<span class="text-xs" style="color: var(--text-secondary);">Thanks for your feedback!</span>';
     } else {
       // Error - log and re-enable buttons (non-intrusive)
       console.error("Failed to submit feedback:", await response.text());

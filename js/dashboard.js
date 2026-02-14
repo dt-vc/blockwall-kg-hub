@@ -46,10 +46,10 @@ async function switchTab(targetTab) {
 
     if (isActive) {
       button.setAttribute('aria-selected', 'true');
-      button.className = 'px-6 py-3 font-medium transition-colors border-b-2 border-blue-500 text-blue-500';
+      button.className = 'px-1 pb-2 text-sm font-semibold tracking-wide uppercase transition-colors tab-active';
     } else {
       button.setAttribute('aria-selected', 'false');
-      button.className = 'px-6 py-3 font-medium transition-colors border-b-2 border-transparent text-gray-400 hover:text-white';
+      button.className = 'px-1 pb-2 text-sm font-semibold tracking-wide uppercase transition-colors tab-inactive';
     }
   });
 

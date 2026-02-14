@@ -10,7 +10,7 @@ import { API_BASE } from './config.js';
 const chartInstances = {};
 
 // Set global Chart.js defaults for dark theme
-Chart.defaults.color = 'rgb(229, 231, 235)'; // gray-200
+Chart.defaults.color = '#e8e6e3';
 
 /**
  * Render the trending topics horizontal bar chart
@@ -50,8 +50,8 @@ export async function renderTrendingTopicsChart() {
         datasets: [{
           label: 'Articles',
           data: data.topics.map(t => t.articles),
-          backgroundColor: 'rgba(59, 130, 246, 0.6)',   // blue-500
-          borderColor: 'rgb(59, 130, 246)',
+          backgroundColor: 'rgba(212, 165, 116, 0.6)',
+          borderColor: '#d4a574',
           borderWidth: 1
         }]
       },
@@ -64,18 +64,18 @@ export async function renderTrendingTopicsChart() {
           title: {
             display: true,
             text: 'Top 10 Trending Topics (Last 7 Days)',
-            color: 'rgb(229, 231, 235)',
-            font: { size: 14, weight: 'bold' }
+            color: '#e8e6e3',
+            font: { size: 14, weight: 'bold', family: "'Playfair Display', Georgia, serif" }
           }
         },
         scales: {
           x: {
             beginAtZero: true,
-            ticks: { color: 'rgb(156, 163, 175)' },
-            grid: { color: 'rgba(75, 85, 99, 0.3)' }
+            ticks: { color: '#8a8578' },
+            grid: { color: 'rgba(255, 255, 255, 0.05)' }
           },
           y: {
-            ticks: { color: 'rgb(156, 163, 175)' },
+            ticks: { color: '#8a8578' },
             grid: { display: false }
           }
         }
@@ -140,7 +140,7 @@ export async function renderSentimentChart() {
             'rgba(156, 163, 175, 0.8)',  // gray-400
             'rgba(239, 68, 68, 0.8)'     // red-500
           ],
-          borderColor: 'rgb(31, 41, 55)',  // gray-800
+          borderColor: '#0a0a0f',
           borderWidth: 2
         }]
       },
@@ -151,7 +151,7 @@ export async function renderSentimentChart() {
           legend: {
             position: 'bottom',
             labels: {
-              color: 'rgb(229, 231, 235)',
+              color: '#e8e6e3',
               padding: 16,
               font: { size: 13 }
             }
@@ -159,8 +159,8 @@ export async function renderSentimentChart() {
           title: {
             display: true,
             text: 'Sentiment Distribution (Last 7 Days)',
-            color: 'rgb(229, 231, 235)',
-            font: { size: 14, weight: 'bold' }
+            color: '#e8e6e3',
+            font: { size: 14, weight: 'bold', family: "'Playfair Display', Georgia, serif" }
           },
           tooltip: {
             callbacks: {

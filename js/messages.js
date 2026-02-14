@@ -18,8 +18,8 @@ export function addUserMessage(question) {
   messageDiv.className = "flex justify-end mb-4";
 
   const bubble = document.createElement("div");
-  bubble.className = "bg-blue-600 rounded-2xl rounded-br-sm px-4 py-2 max-w-[90%] md:max-w-[80%]";
-  bubble.innerHTML = `<p class="text-white text-sm">${escapeHtml(question)}</p>`;
+  bubble.className = "glass-gold rounded-2xl rounded-br-sm px-4 py-2 max-w-[90%] md:max-w-[80%]";
+  bubble.innerHTML = `<p class="text-sm" style="color: var(--text-primary);">${escapeHtml(question)}</p>`;
 
   messageDiv.appendChild(bubble);
   messagesContainer.appendChild(messageDiv);
@@ -42,7 +42,7 @@ export function addBotMessage() {
   messageDiv.className = "flex justify-start mb-4";
 
   const bubble = document.createElement("div");
-  bubble.className = "bg-gray-800 border border-gray-700 rounded-2xl rounded-bl-sm px-4 py-3 max-w-[90%] md:max-w-[85%]";
+  bubble.className = "glass rounded-2xl rounded-bl-sm px-4 py-3 max-w-[90%] md:max-w-[85%]";
 
   bubble.innerHTML = `
     <div class="answer-content prose prose-invert prose-sm"></div>
@@ -123,7 +123,7 @@ export function renderSources(messageEl, sources) {
   sourcesContainer.classList.remove("hidden");
 
   // Build sources HTML
-  let sourcesHTML = '<p class="text-xs text-gray-500 mb-2">Sources:</p>';
+  let sourcesHTML = '<p class="text-xs mb-2" style="color: var(--text-muted);">Sources:</p>';
   sourcesHTML += '<div class="space-y-1">';
 
   sources.forEach((source, index) => {
@@ -135,7 +135,7 @@ export function renderSources(messageEl, sources) {
 
     if (url) {
       // Clickable link
-      sourcesHTML += `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 hover:underline">${title}</a>`;
+      sourcesHTML += `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="hover:underline" style="color: var(--gold);">${title}</a>`;
     } else {
       // Plain text
       sourcesHTML += `<span class="text-gray-400">${title}</span>`;

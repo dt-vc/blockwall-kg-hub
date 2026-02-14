@@ -41,13 +41,13 @@ export function updateStatus(status) {
 
   let stepIndicator = "";
   if (step) {
-    stepIndicator = `<span class="text-xs text-gray-500 ml-2">Step ${step.current}/${step.total}</span>`;
+    stepIndicator = `<span class="text-xs ml-2" style="color: var(--text-muted);">Step ${step.current}/${step.total}</span>`;
   }
 
   statusEl.innerHTML = `
     <div class="flex items-center gap-2">
-      <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-      <span class="text-xs text-gray-400">${label}</span>
+      <div class="w-2 h-2 rounded-full animate-pulse" style="background: var(--gold);"></div>
+      <span class="text-xs" style="color: var(--text-secondary);">${label}</span>
       ${stepIndicator}
     </div>
   `;
@@ -70,10 +70,10 @@ export function showRetryStatus(attempt, delayMs, message) {
 
   statusEl.innerHTML = `
     <div class="flex items-center gap-2">
-      <div class="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
-      <span class="text-xs text-amber-400">${message}</span>
-      <span class="text-xs text-gray-500 ml-2">Attempt ${attempt}/${maxAttempts}</span>
-      <span class="text-xs text-gray-600">• Retrying in ${delaySeconds}s</span>
+      <div class="w-2 h-2 rounded-full animate-pulse" style="background: var(--gold);"></div>
+      <span class="text-xs" style="color: var(--gold);">${message}</span>
+      <span class="text-xs ml-2" style="color: var(--text-muted);">Attempt ${attempt}/${maxAttempts}</span>
+      <span class="text-xs" style="color: var(--text-muted);">• Retrying in ${delaySeconds}s</span>
     </div>
   `;
 }

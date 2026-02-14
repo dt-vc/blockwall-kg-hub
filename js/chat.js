@@ -13,6 +13,7 @@ import {
 } from "./messages.js";
 import { updateStatus, showRetryStatus, hideStatus } from "./status.js";
 import { renderEntityPills } from "./entities.js";
+import { createFeedbackButtons } from "./feedback.js";
 
 // State management
 let isProcessing = false;
@@ -145,6 +146,12 @@ async function processQuestion(question) {
             // Render entity pills after answer is complete
             if (currentMessageEl && storedMetaData) {
               renderEntityPills(currentMessageEl, storedMetaData);
+            }
+            // Render feedback buttons after answer is complete
+            const feedbackContainer = currentMessageEl.querySelector(".feedback-container");
+            if (feedbackContainer) {
+              feedbackContainer.classList.remove("hidden");
+              feedbackContainer.appendChild(createFeedbackButtons(question, currentMessageEl.dataset.fullText || ""));
             }
             break;
         }

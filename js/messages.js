@@ -48,6 +48,7 @@ export function addBotMessage() {
     <div class="answer-content prose prose-invert prose-sm"></div>
     <div class="sources-container mt-3 hidden"></div>
     <div class="entities-container mt-2 hidden"></div>
+    <div class="feedback-container mt-2 hidden"></div>
   `;
 
   messageDiv.appendChild(bubble);

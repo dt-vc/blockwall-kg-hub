@@ -192,6 +192,7 @@ async function showCompanyDetail(slug, name) {
             <h4 class="font-bold text-sm flex-1" style="color: var(--text-primary);">${escapeHtml(item.headline)}</h4>
             <span class="glass px-2 py-0.5 rounded text-xs ml-2 whitespace-nowrap" style="color: var(--text-secondary);">${escapeHtml(item.item_type)}</span>
           </div>
+          ${item.collected_at ? `<p class="text-xs mb-2" style="color: var(--text-muted);">${formatDate(item.collected_at)}</p>` : ''}
           ${item.why_it_matters ? `<p class="text-sm mb-2" style="color: var(--text-secondary);">${escapeHtml(item.why_it_matters)}</p>` : ''}
           ${item.sources && item.sources.length > 0 ? `
             <div class="flex flex-wrap gap-2 mt-2">
@@ -210,6 +211,32 @@ async function showCompanyDetail(slug, name) {
           <span class="font-semibold" style="color: var(--text-primary);">${escapeHtml(f.round || '')}</span>
           ${f.amount ? ` <span style="color: var(--text-secondary);">${formatCurrency(f.amount)}</span>` : ''}
           ${f.date ? ` <span class="text-xs" style="color: var(--text-muted);">${formatDate(f.date)}</span>` : ''}
+        </div>
+      `).join('');
+    }
+
+    // Blog posts from company website
+    if (data.blogs && data.blogs.length > 0) {
+      html += '<h3 class="text-sm font-semibold uppercase tracking-wide mb-3 mt-4" style="color: var(--text-secondary);">Latest Posts</h3>';
+      html += data.blogs.map(post => `
+        <div class="glass p-3 mb-2">
+          <a href="${escapeHtml(post.url)}" target="_blank" rel="noopener" class="font-semibold text-sm hover:underline" style="color: var(--text-primary);">${escapeHtml(post.title)}</a>
+          ${post.date ? `<span class="text-xs ml-2" style="color: var(--text-muted);">${formatDate(post.date)}</span>` : ''}
+          ${post.excerpt ? `<p class="text-xs mt-1" style="color: var(--text-secondary);">${escapeHtml(post.excerpt)}</p>` : ''}
+        </div>
+      `).join('');
+    }
+
+    // Third-party news coverage
+    if (data.news_items && data.news_items.length > 0) {
+      html += '<h3 class="text-sm font-semibold uppercase tracking-wide mb-3 mt-4" style="color: var(--text-secondary);">News Coverage</h3>';
+      html += data.news_items.map(item => `
+        <div class="glass p-3 mb-2" style="border-left: 3px solid var(--gold);">
+          <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener" class="font-semibold text-sm hover:underline" style="color: var(--text-primary);">${escapeHtml(item.title)}</a>
+          <div class="flex gap-3 mt-1 text-xs" style="color: var(--text-muted);">
+            ${item.publisher ? `<span>${escapeHtml(item.publisher)}</span>` : ''}
+            ${item.date ? `<span>${formatDate(item.date)}</span>` : ''}
+          </div>
         </div>
       `).join('');
     }
